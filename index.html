@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple NFT Mint</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+    
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      color: #888;
+      margin-bottom: 30px;
+    }
+    
+    .nft-preview {
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, #7b2ff7 0%, #00d4ff 100%);
+      border-radius: 16px;
+      margin: 0 auto 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 4rem;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 30px;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00d4ff;
+    }
+    
+    .stat-label {
+      font-size: 0.8rem;
+      color: #888;
+    }
+    
+    .price {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+    
+    .price-value {
+      color: #00d4ff;
+      font-weight: bold;
+    }
+    
+    button {
+      width: 100%;
+      padding: 16px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 15px;
+    }
+    
+    .connect-btn {
+      background: linear-gradient(90deg, #7b2ff7, #00d4ff);
+      color: white;
+    }
+    
+    .connect-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(123, 47, 247, 0.3);
+    }
+    
+    .mint-btn {
+      background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+      color: white;
+    }
+    
+    .mint-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+    }
+    
+    .mint-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .disconnect-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #888;
+      font-size: 0.9rem;
+      padding: 10px;
+    }
+    
+    .disconnect-btn:hover {
+      border-color: #ff4757;
+      color: #ff4757;
+    }
+    
+    .status {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+    }
+    
+    .status.success {
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      color: #00ff88;
+    }
+    
+    .status.error {
+      background: rgba(255, 71, 87, 0.1);
+      border: 1px solid rgba(255, 71, 87, 0.3);
+      color: #ff4757;
+    }
+    
+    .status.info {
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: #00d4ff;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .address {
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #00d4ff;
+      margin-bottom: 15px;
+      word-break: break-all;
+    }
+    
+    a {
+      color: #00d4ff;
+      text-decoration: none;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Simple NFT</h1>
+    <p class="subtitle">Mint your unique NFT on Stacks</p>
+    
+    <div class="nft-preview">🎨</div>
+    
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" id="minted">--</div>
+        <div class="stat-label">Minted</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="supply">10,000</div>
+        <div class="stat-label">Max Supply</div>
+      </div>
+    </div>
+    
+    <div class="price">
+      Price: <span class="price-value">0.001 STX</span>
+    </div>
+    
+    <!-- Not connected state -->
+    <div id="not-connected">
+      <button class="connect-btn" id="connect-btn">Connect Wallet</button>
+    </div>
+    
+    <!-- Connected state -->
+    <div id="connected" class="hidden">
+      <p class="address" id="wallet-address"></p>
+      <button class="mint-btn" id="mint-btn">Mint NFT</button>
+      <button class="disconnect-btn" id="disconnect-btn">Disconnect</button>
+    </div>
+    
+    <div id="status" class="status hidden"></div>
+  </div>
+  
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

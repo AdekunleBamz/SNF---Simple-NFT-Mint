@@ -1,0 +1,25 @@
+{
+  "name": "nft-mint",
+  "version": "1.0.0",
+  "description": "Simple NFT Minting Platform on Stacks",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "mint": "node mint-script.js"
+  },
+  "keywords": ["nft", "stacks", "blockchain"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@reown/appkit": "^1.8.15",
+    "@reown/appkit-adapter-wagmi": "^1.8.15",
+    "@stacks/network": "^7.3.1",
+    "@stacks/transactions": "^7.3.1",
+    "@stacks/wallet-sdk": "^7.2.0",
+    "dotenv": "^17.2.3",
+    "vite": "^7.3.0"
+  }
+}
