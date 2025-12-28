@@ -10,10 +10,6 @@ A minimal NFT marketplace on the Stacks blockchain with minting, listing, buying
 -  Wallet connection via browser extensions (Leather, Xverse)
 -  Vite-powered frontend
 
-## Deployed Contracts (Mainnet)
-
-- **NFT Contract:** `SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.simple-nft-v3`
-- **Marketplace:** `SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.nft-marketplace`
 
 ## Project Structure
 
