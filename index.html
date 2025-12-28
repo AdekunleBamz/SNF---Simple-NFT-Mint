@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple NFT Mint</title>
+  <title>Simple NFT Marketplace</title>
   <style>
     * {
       margin: 0;
@@ -12,214 +12,322 @@
     }
     
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       color: #fff;
     }
     
     .container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    header {
       text-align: center;
-      max-width: 420px;
-      width: 90%;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 3rem;
     }
     
     h1 {
-      font-size: 2rem;
-      margin-bottom: 10px;
-      background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #7b2ff7, #f107a3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
     }
     
     .subtitle {
       color: #888;
-      margin-bottom: 30px;
-    }
-    
-    .nft-preview {
-      width: 200px;
-      height: 200px;
-      background: linear-gradient(135deg, #7b2ff7 0%, #00d4ff 100%);
-      border-radius: 16px;
-      margin: 0 auto 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 4rem;
+      font-size: 1.1rem;
     }
     
     .stats {
       display: flex;
-      justify-content: space-around;
-      margin-bottom: 30px;
+      justify-content: center;
+      gap: 3rem;
+      margin: 2rem 0;
     }
     
     .stat {
       text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem 2.5rem;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .stat-value {
-      font-size: 1.5rem;
+      font-size: 2rem;
       font-weight: bold;
-      color: #00d4ff;
+      color: #7b2ff7;
     }
     
     .stat-label {
-      font-size: 0.8rem;
       color: #888;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
     }
     
-    .price {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 2rem;
     }
     
-    .price-value {
-      color: #00d4ff;
-      font-weight: bold;
-    }
-    
-    button {
-      width: 100%;
-      padding: 16px 32px;
+    .btn {
+      padding: 1rem 2rem;
       font-size: 1.1rem;
-      font-weight: 600;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-bottom: 15px;
+      font-weight: 600;
     }
     
-    .connect-btn {
-      background: linear-gradient(90deg, #7b2ff7, #00d4ff);
+    .btn-primary {
+      background: linear-gradient(90deg, #7b2ff7, #f107a3);
       color: white;
     }
     
-    .connect-btn:hover {
+    .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(123, 47, 247, 0.3);
+      box-shadow: 0 10px 30px rgba(123, 47, 247, 0.4);
     }
     
-    .mint-btn {
-      background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
       color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
-    .mint-btn:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
     
-    .mint-btn:disabled {
+    .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
     
-    .disconnect-btn {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #888;
-      font-size: 0.9rem;
-      padding: 10px;
+    .wallet-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
     
-    .disconnect-btn:hover {
-      border-color: #ff4757;
-      color: #ff4757;
+    .wallet-address {
+      font-family: monospace;
+      background: rgba(123, 47, 247, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
     }
     
     .status {
-      margin-top: 20px;
-      padding: 15px;
+      padding: 1rem;
       border-radius: 10px;
-      font-size: 0.9rem;
-    }
-    
-    .status.success {
-      background: rgba(0, 255, 136, 0.1);
-      border: 1px solid rgba(0, 255, 136, 0.3);
-      color: #00ff88;
-    }
-    
-    .status.error {
-      background: rgba(255, 71, 87, 0.1);
-      border: 1px solid rgba(255, 71, 87, 0.3);
-      color: #ff4757;
+      margin-top: 1rem;
+      text-align: center;
     }
     
     .status.info {
-      background: rgba(0, 212, 255, 0.1);
-      border: 1px solid rgba(0, 212, 255, 0.3);
-      color: #00d4ff;
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.5);
+    }
+    
+    .status.success {
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+    }
+    
+    .status.error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+    }
+    
+    .status a {
+      color: #7b2ff7;
+      text-decoration: underline;
     }
     
     .hidden {
-      display: none;
+      display: none !important;
     }
     
-    .address {
-      font-family: monospace;
-      font-size: 0.85rem;
-      color: #00d4ff;
-      margin-bottom: 15px;
-      word-break: break-all;
+    .mint-section {
+      text-align: center;
+      padding: 2rem 0;
     }
     
-    a {
-      color: #00d4ff;
+    .mint-price {
+      font-size: 1.5rem;
+      color: #7b2ff7;
+      margin-bottom: 1rem;
+    }
+    
+    .nft-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .nft-card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .nft-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .nft-image {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    
+    .nft-id {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #7b2ff7;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    
+    .list-nft-btn {
+      width: 100%;
+      padding: 0.8rem;
+      background: linear-gradient(90deg, #7b2ff7, #f107a3);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .list-nft-btn:hover {
+      opacity: 0.9;
+    }
+    
+    .no-nfts {
+      text-align: center;
+      color: #888;
+      padding: 2rem;
+    }
+    
+    .fee-info {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #888;
+    }
+    
+    .fee-info h4 {
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    footer a {
+      color: #7b2ff7;
       text-decoration: none;
     }
     
-    a:hover {
-      text-decoration: underline;
+    @media (max-width: 768px) {
+      .stats {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .wallet-info {
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Simple NFT</h1>
-    <p class="subtitle">Mint your unique NFT on Stacks</p>
-    
-    <div class="nft-preview">🎨</div>
+    <header>
+      <h1>Simple NFT Marketplace</h1>
+      <p class="subtitle">Mint, list, and trade NFTs on Stacks blockchain</p>
+    </header>
     
     <div class="stats">
       <div class="stat">
-        <div class="stat-value" id="minted">--</div>
-        <div class="stat-label">Minted</div>
+        <div class="stat-value" id="minted">0</div>
+        <div class="stat-label">NFTs Minted</div>
       </div>
       <div class="stat">
-        <div class="stat-value" id="supply">10,000</div>
-        <div class="stat-label">Max Supply</div>
+        <div class="stat-value" id="listed">0</div>
+        <div class="stat-label">Listed for Sale</div>
       </div>
     </div>
     
-    <div class="price">
-      Price: <span class="price-value">0.001 STX</span>
+    <!-- Not Connected State -->
+    <div class="card" id="not-connected">
+      <div class="mint-section">
+        <h2>Connect Your Wallet</h2>
+        <p style="color: #888; margin: 1rem 0;">Connect your Stacks wallet to mint and trade NFTs</p>
+        <button id="connect-btn" class="btn btn-primary">Connect Wallet</button>
+      </div>
     </div>
     
-    <!-- Not connected state -->
-    <div id="not-connected">
-      <button class="connect-btn" id="connect-btn">Connect Wallet</button>
+    <!-- Connected State -->
+    <div class="card hidden" id="connected">
+      <div class="wallet-info">
+        <span>Connected:</span>
+        <span class="wallet-address" id="wallet-address">SP123...xyz</span>
+        <button id="disconnect-btn" class="btn btn-secondary">Disconnect</button>
+      </div>
+      
+      <div class="mint-section">
+        <h2>Mint Your NFT</h2>
+        <div class="mint-price">0.001 STX</div>
+        <button id="mint-btn" class="btn btn-primary">Mint NFT</button>
+      </div>
+      
+      <div id="status" class="status hidden"></div>
+      
+      <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Your NFTs</h3>
+      <div id="nft-list" class="nft-grid">
+        <p class="no-nfts">No NFTs yet. Mint one!</p>
+      </div>
+      
+      <div class="fee-info">
+        <h4>Marketplace Fees</h4>
+        <p>• Listing Fee: 0.0013 STX</p>
+        <p>• Sell Fee: 0.0013 STX (taken from sale proceeds)</p>
+        <p>• Buy Fee: 0.0013 STX (added to purchase price)</p>
+      </div>
     </div>
     
-    <!-- Connected state -->
-    <div id="connected" class="hidden">
-      <p class="address" id="wallet-address"></p>
-      <button class="mint-btn" id="mint-btn">Mint NFT</button>
-      <button class="disconnect-btn" id="disconnect-btn">Disconnect</button>
-    </div>
-    
-    <div id="status" class="status hidden"></div>
+    <footer>
+      <p>Built on <a href="https://www.stacks.co" target="_blank">Stacks</a> | 
+         <a href="https://explorer.hiro.so/address/SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.simple-nft-v4?chain=mainnet" target="_blank">View Contract</a>
+      </p>
+    </footer>
   </div>
   
   <script type="module" src="/src/main.js"></script>
