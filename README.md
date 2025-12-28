@@ -4,11 +4,11 @@ A minimal NFT marketplace on the Stacks blockchain with minting, listing, buying
 
 ## Features
 
-- 🎨 Simple NFT with sequential IDs
-- 💰 Low fees: Mint (0.001 STX), List (0.0013 STX), Sale (0.0013 STX)
-- 🏪 Built-in marketplace for listing and buying NFTs
-- 🔗 Wallet connection via browser extensions (Leather, Xverse)
-- ⚡ Vite-powered frontend
+-  Simple NFT with sequential IDs
+-  Low fees: Mint (0.001 STX), List (0.0013 STX), Sale (0.0013 STX)
+-  Built-in marketplace for listing and buying NFTs
+-  Wallet connection via browser extensions (Leather, Xverse)
+-  Vite-powered frontend
 
 ## Deployed Contracts (Mainnet)
 
