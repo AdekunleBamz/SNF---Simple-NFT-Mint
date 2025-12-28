@@ -35,3 +35,12 @@ mnemonic*
 deploy-contract.js
 mint-script.js
 .vercel
+
+# Marketplace scripts (contain wallet logic)
+bulk-mint.js
+marketplace-script.js
+transfer-stx.cjs
+deploy-marketplace.js
+
+# Transfer results
+transfer-results-*.json
