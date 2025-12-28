@@ -18,7 +18,7 @@ const CONFIG = {
   APP_NAME: 'Simple NFT Marketplace',
   APP_ICON: window.location.origin + '/icon.png',
   // REOWN Project ID - Get yours at https://cloud.reown.com
-  REOWN_PROJECT_ID: '8b0527e6a5e1c76d11249c2f8aad5a7e'
+  REOWN_PROJECT_ID: '4fb22bec203d094dbec52767e3bcc016'
 };
 
 // Stacks session for transaction signing
