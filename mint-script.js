@@ -7,14 +7,14 @@ import {
   broadcastTransaction,
   AnchorMode,
   PostConditionMode,
-  getNonce
+//   getNonce
 } from '@stacks/transactions';
 import { STACKS_MAINNET, STACKS_TESTNET } from '@stacks/network';
 
 // Configuration - UPDATE THESE
 const CONFIG = {
   CONTRACT_ADDRESS: 'SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97',
-  CONTRACT_NAME: 'simple-nft-v2',
+  CONTRACT_NAME: 'simple-nft-v3',
   NETWORK: process.env.NETWORK || 'mainnet'
 };
 
