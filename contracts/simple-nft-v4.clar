@@ -61,13 +61,48 @@
 ;; Transfer NFT - supports marketplace transfers
 (define-public (transfer (token-id uint) (sender principal) (recipient principal))
   (begin
-    (asserts! 
-      (or 
+    (asserts!
+      (or
         (is-eq tx-sender sender)
         (is-eq contract-caller MARKETPLACE_CONTRACT)
-      ) 
+      )
       ERR_NOT_AUTHORIZED)
     (nft-transfer? simple-nft token-id sender recipient)))
+
+;; Bulk operations
+
+;; Bulk mint NFTs (up to 10 NFTs per transaction)
+(define-private (mint-single-nft (recipient principal))
+  (let
+    (
+      (token-id (+ (var-get last-token-id) u1))
+      (minter tx-sender)
+    )
+    (asserts! (< (var-get total-minted) MAX_SUPPLY) ERR_MAX_SUPPLY_REACHED)
+    (try! (stx-transfer? MINT_PRICE minter CONTRACT_OWNER))
+    (try! (nft-mint? simple-nft token-id recipient))
+    (var-set last-token-id token-id)
+    (var-set total-minted (+ (var-get total-minted) u1))
+    (ok token-id)))
+
+(define-public (bulk-mint (count uint) (recipient principal))
+  (let
+    (
+      (total-cost (* count MINT_PRICE))
+    )
+    (asserts! (> count u0) ERR_MINT_FAILED)
+    (asserts! (<= count u10) ERR_MINT_FAILED) ;; Max 10 NFTs per bulk mint
+    (asserts! (<= (+ (var-get total-minted) count) MAX_SUPPLY) ERR_MAX_SUPPLY_REACHED)
+
+    ;; Collect total payment upfront
+    (try! (stx-transfer? total-cost tx-sender CONTRACT_OWNER))
+
+    ;; Mint all NFTs
+    (let ((result (map mint-single-nft (list recipient recipient recipient recipient recipient recipient recipient recipient recipient recipient))))
+      (ok true)
+    )
+  )
+)
 
 ;; SIP-009 NFT Trait
 (define-read-only (get-token-name)
