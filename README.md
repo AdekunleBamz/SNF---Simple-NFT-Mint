@@ -92,3 +92,17 @@ npm run preview
 ## License
 
 ISC
+
+## Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a new branch for your feature: `git checkout -b feature/your-feature`
+3. Make your changes
+4. Test your changes
+5. Commit your changes: `git commit -m 'Add your message'`
+6. Push to your branch: `git push origin feature/your-feature`
+7. Submit a pull request
+
+For contract changes, ensure you test on the Stacks testnet.
