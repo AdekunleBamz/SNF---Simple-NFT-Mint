@@ -2,7 +2,7 @@
   "name": "nft-mint",
   "version": "1.0.0",
   "description": "Simple NFT Minting Platform on Stacks",
-  "main": "index.js",
+  "homepage": "https://github.com/AdekunleBamz/SNF---Simple-NFT-Mint",  "main": "index.js",
   "type": "module",
   "scripts": {
     "dev": "vite",
