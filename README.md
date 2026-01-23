@@ -1,4 +1,4 @@
-# Simple NFT Marketplace
+<!-- SNF NFT Mint contribution -->n# Simple NFT Marketplace
 
 A minimal NFT marketplace on the Stacks blockchain with minting, listing, buying, and selling functionality.
 
